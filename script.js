@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+    const loader = document.querySelector(".loader")
+    const loading = document.querySelector(".loading")
+
+
+    const restartButton = document.querySelector('.restart');
+    canvas.width = windowWidth / 1.5;
+    canvas.height = windowHeight - 200
 
     const API_URL = "https://goapi.kabakoo.africa";
     const canvas = document.getElementById('drawingCanvas');
@@ -127,9 +136,16 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("nameDescription").style.display = "flex";
     };
 
+    window.restart = function () {
+        loader.style.display = 'none'
+        generateImage.style.display = 'none';
+        restartButton.style.display = 'none';
+    }
+
     window.submitCreation = async function () {
         const description = document.getElementById('mainFunction').value;
-        document.querySelector(".loader").style.display = "flex";
+        loader.style.display = "flex";
+        loading.style.display = "block"
         const sketch = canvas.toDataURL('image/png');
 
         try {
@@ -147,17 +163,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await response.json();
             console.log(data);
-            // generateImage.style.display = 'block';
+            loading.style.display = "none"
+            generateImage.style.display = 'block';
+            restartButton.style.display = 'block';
             // generateQRCode(data.qrCodeData);
-            requestEnhancedSketch();
+        } catch (e) {
 
-
-        } catch (error) {
-            console.error('Erreur:', error);
-        } finally {
-            document.querySelector(".loader").style.display = "none";
         }
-    };
+    }
 
     window.clearCanvas = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
