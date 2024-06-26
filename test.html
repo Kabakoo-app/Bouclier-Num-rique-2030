@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        color: #0056b3;
+        background-color: #3a1a58; /* Couleur de fond générale */
+      }
+
+      #container {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+      }
+
+      #drawing-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      #canvas {
+        border-radius: 10px;
+        background-color: #f8f6f0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        height: 80%;
+      }
+
+      #controls {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+      }
+
+      #controls button,
+      #controls input[type="color"],
+      #controls input[type="range"] {
+        margin: 5px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      #controls button {
+        background: #3a1a58;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      #controls button:hover {
+        background: #290f3b;
+      }
+
+      #message-section {
+        width: 30%;
+        padding: 20px;
+        background-color: #7c5581; /* Couleur de fond du message */
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      #message-section h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      #message-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      #message-section li {
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      #message-section button {
+        margin-top: 20px;
+        padding: 10px;
+        background: #e0a15b;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background 0.3s;
+      }
+
+      #message-section button:hover {
+        background: #c38f50;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="drawing-section">
+        <canvas id="canvas"></canvas>
+        <div id="controls">
+          <button id="pen"><img src="path/to/pen-icon.png" alt="Pen" /></button>
+          <button id="eraser">
+            <img src="path/to/eraser-icon.png" alt="Eraser" />
+          </button>
+          <input type="color" id="colorPicker" />
+          <input type="range" id="sizePicker" min="1" max="10" value="5" />
+          <button id="undo">Undo</button>
+          <button onclick="redo()">Redo</button>
+          <button onclick="validate()">Validate</button>
+        </div>
+      </div>
+      <div id="message-section">
+        <h1>MALI 2030 : UN PAYS RÉSILIENT FACE AUX DÉFIS MONDIAUX</h1>
+        <ul>
+          <li>
+            Des campagnes de désinformation massives visent à déstabiliser notre
+            société
+          </li>
+          <li>
+            Des campagnes économiques illégales et des attaques financières
+            menacent notre prospérité
+          </li>
+          <li>
+            Notre souveraineté et notre capacité à définir notre propre voie
+            sont mises à l'épreuve par des pressions extérieures
+          </li>
+        </ul>
+        <button>Continuer</button>
+      </div>
+    </div>
+    <script>
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+
+      function resizeCanvas() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+      }
+
+      window.addEventListener("resize", resizeCanvas, false);
+      resizeCanvas();
+
+      var painting = false;
+      var color = "#000000";
+      var size = 5;
+      var lastX, lastY;
+      var points = [];
+      var redoStack = [];
+
+      function startPainting(x, y) {
+        painting = true;
+        lastX = x - canvas.offsetLeft;
+        lastY = y - canvas.offsetTop;
+      }
+
+      function stopPainting() {
+        painting = false;
+        points.push("end");
+      }
+
+      function drawLine(x, y) {
+        if (!painting) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x - canvas.offsetLeft, y - canvas.offsetTop);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = size;
+        ctx.stroke();
+        lastX = x - canvas.offsetLeft;
+        lastY = y - canvas.offsetTop;
+
+        points.push({ x: lastX, y: lastY, color: color, size: size });
+      }
+
+      canvas.addEventListener("mousedown", function (e) {
+        startPainting(e.pageX, e.pageY);
+      });
+
+      canvas.addEventListener("mouseup", stopPainting);
+
+      canvas.addEventListener("mousemove", function (e) {
+        drawLine(e.pageX, e.pageY);
+      });
+
+      canvas.addEventListener("touchstart", function (e) {
+        var touch = e.touches[0];
+        startPainting(touch.pageX, touch.pageY);
+      });
+
+      canvas.addEventListener("touchend", stopPainting);
+
+      canvas.addEventListener("touchmove", function (e) {
+        var touch = e.touches[0];
+        drawLine(touch.pageX, touch.pageY);
+        e.preventDefault();
+      });
+
+      document.getElementById("colorPicker").onchange = function () {
+        color = this.value;
+      };
+
+      document.getElementById("sizePicker").onchange = function () {
+        size = this.value;
+      };
+
+      function undo() {
+        if (points.length) {
+          var point = points.pop();
+          while (point !== "end") {
+            redoStack.push(point);
+            point = points.pop();
+          }
+          redraw();
+        }
+      }
+
+      function redo() {
+        if (redoStack.length) {
+          var point = redoStack.pop();
+          while (point !== "end") {
+            points.push(point);
+            point = redoStack.pop();
+          }
+          points.push("end");
+          redraw();
+        }
+      }
+
+      function validate() {
+        var dataUrl = canvas.toDataURL();
+        console.log(dataUrl);
+        // Add your validation logic here
+      }
+
+      function redraw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < points.length; i++) {
+          if (points[i] === "end") {
+            lastX = undefined;
+            lastY = undefined;
+            continue;
+          }
+          ctx.beginPath();
+          if (lastX !== undefined && lastY !== undefined) {
+            ctx.moveTo(lastX, lastY);
+          }
+          ctx.lineTo(points[i].x, points[i].y);
+          ctx.strokeStyle = points[i].color;
+          ctx.lineWidth = points[i].size;
+          ctx.stroke();
+          lastX = points[i].x;
+          lastY = points[i].y;
+        }
+      }
+    </script>
+  </body>
+</html>
