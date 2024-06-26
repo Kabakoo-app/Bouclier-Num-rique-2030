@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.button {
+    padding: 10px 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.creation-area {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.drawing-area, .description-area {
+    width: 45%;
+}
+
+.description-area {
+    text-align: left;
+}
+
+.tools {
+    margin-top: 10px;
+}
+
+.name-description {
+    margin-top: 20px;
+}
+
+.gallery {
+    margin-top: 20px;
+}

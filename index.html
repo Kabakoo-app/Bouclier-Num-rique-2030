@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme de Création d'Objet Futuriste</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">Imagine un objet du futur pour protéger le Mali</div>
+        <button class="button" onclick="startCreation()">Commencer</button>
+
+        <div class="creation-area" id="creationArea" style="display: none;">
+            <div class="drawing-area" style="border: 3px solid indigo;">
+                <canvas id="drawingCanvas" width="500" height="500"></canvas>
+                <div class="tools">
+                    <button onclick="setShape('circle')">Cercle</button>
+                    <button onclick="setShape('square')">Carré</button>
+                    <button onclick="setShape('line')">Ligne</button>
+                    <button onclick="clearCanvas()">Effacer</button>
+                </div>
+            </div>
+            <div class="description-area">
+                <p>Mali 2030 : Un pays résilient face aux défis mondiaux</p>
+                <ul>
+                    <li>Des campagnes de désinformation massives visent à déstabiliser notre société</li>
+                    <li>Des campagnes économiques illégales et des attaques financières menacent notre prospérité</li>
+                    <li>Notre souveraineté et notre capacité à définir notre propre voie sont mises à l'épreuve par des pressions extérieures</li>
+                </ul>
+                <p>Imagine un objet innovant pour renforcer notre résilience face à ces défis, tout en préservant notre indépendance et l’amélioration des conditions des vies des populations maliennes et sahéliennes.</p>
+                <p>Ta créativité peut contribuer à un avenir plus juste et prospère pour le Mali !</p>
+            </div>
+        </div>
+
+        <div class="name-description" id="nameDescription" style="display: none;">
+            <input type="text" id="objectName" placeholder="Nom de l'objet">
+            <select id="mainFunction">
+                <option value="Protection contre la désinformation médiatique">Protection contre la désinformation médiatique</option>
+                <option value="Sécurisation des transactions économiques">Sécurisation des transactions économiques</option>
+                <option value="Détection et neutralisation des influences étrangères malveillantes">Détection et neutralisation des influences étrangères malveillantes</option>
+                <option value="Résistance aux attaques économiques et financières">Résistance aux attaques économiques et financières</option>
+                <option value="Préservation et promotion de la culture et des savoir-faire maliens">Préservation et promotion de la culture et des savoir-faire maliens</option>
+                <option value="Renforcement de la cohésion sociale face aux menaces externes">Renforcement de la cohésion sociale face aux menaces externes</option>
+            </select>
+            <button onclick="submitCreation()">Soumettre</button>
+        </div>
+
+        <div id="qrCodeContainer" style="display: none;">
+            <p>Scannez le QR code pour partager votre création :</p>
+            <canvas id="qrCodeCanvas"></canvas>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Les créations récentes s'afficheront ici -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
