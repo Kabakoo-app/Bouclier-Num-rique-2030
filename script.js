@@ -145,6 +145,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // generateQRCode(data.qrCodeData);
     };
 
+    window.clearCanvas = function () {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+
     function generateQRCode(data) {
         const qrCanvas = document.getElementById('qrCodeCanvas');
         const qrContext = qrCanvas.getContext('2d');
