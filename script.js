@@ -83,6 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
         shape = newShape;
     };
 
+    window.startCreation = function () {
+        document.querySelector(".button").style.display = "none";
+        document.getElementById("creationArea").style.display = "flex";
+        document.getElementById("nameDescription").style.display = "block";
+    };
+
     window.clearCanvas = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
