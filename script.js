@@ -4,13 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDrawing = false;
     let shape = 'circle';
 
+    // Écouteurs d'événements pour la souris
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
 
     // Événements tactiles pour les écrans tactiles
-    canvas.addEventListener('touchstart', startDrawing);
-    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
     canvas.addEventListener('touchend', stopDrawing);
 
     function startDrawing(event) {
@@ -19,11 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function draw(event) {
+        event.preventDefault();
         if (!isDrawing) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const x = event.clientX - canvas.offsetLeft;
+        const y = event.clientY - canvas.offsetTop;
 
         if (shape === 'circle') {
             drawCircle(x, y);
@@ -32,6 +33,19 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (shape === 'line') {
             drawLine(x, y);
         }
+    }
+
+    function handleTouchStart(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        isDrawing = true;
+        draw(touch);
+    }
+
+    function handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        draw(touch);
     }
 
     function stopDrawing() {
@@ -69,12 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
         shape = newShape;
     };
 
-    window.startCreation = function () {
-        document.querySelector(".button").style.display = "none";
-        document.getElementById("creationArea").style.display = "flex";
-        document.getElementById("nameDescription").style.display = "block";
-    };
-
     window.clearCanvas = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
@@ -88,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(mainFunction);
         console.log(image);
 
-
+        // Remplace '/submit' par ton URL d'envoi des données
         const response = await fetch('/submit', {
             method: 'POST',
             headers: {
