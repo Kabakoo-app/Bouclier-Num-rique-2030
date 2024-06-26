@@ -1,29 +1,43 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
+document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById('drawingCanvas');
     canvas.width = windowWidth / 1.5 ;
     canvas.height = windowHeight - 200
 
     const context = canvas.getContext('2d');
     let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
     let shape = 'circle';
 
+    // Écouteurs d'événements pour la souris
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
 
+    // Événements tactiles pour les écrans tactiles
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', stopDrawing);
+
     function startDrawing(event) {
         isDrawing = true;
+        [lastX, lastY] = [event.offsetX, event.offsetY];
         draw(event);
     }
 
     function draw(event) {
+        event.preventDefault();
         if (!isDrawing) return;
 
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        let x, y;
+        if (event.type === 'touchmove' || event.type === 'touchstart') {
+            const touch = event.touches[0];
+            x = touch.clientX - canvas.offsetLeft;
+            y = touch.clientY - canvas.offsetTop;
+        } else {
+            x = event.offsetX;
+            y = event.offsetY;
+        }
 
         if (shape === 'circle') {
             drawCircle(x, y);
@@ -32,6 +46,23 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (shape === 'line') {
             drawLine(x, y);
         }
+
+        lastX = x;
+        lastY = y;
+    }
+
+    function handleTouchStart(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        isDrawing = true;
+        [lastX, lastY] = [touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop];
+        draw(event);
+    }
+
+    function handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        draw(event);
     }
 
     function stopDrawing() {
@@ -49,14 +80,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function drawSquare(x, y) {
         context.beginPath();
-        context.rect(x - 10, y - 20, 40, 40);
+        context.rect(x - 10, y - 10, 20, 20);
         context.fillStyle = '#000';
         context.fill();
         context.closePath();
     }
 
     function drawLine(x, y) {
-        context.lineWidth = 10;
+        context.lineWidth = 5;
         context.lineCap = 'round';
         context.strokeStyle = '#000';
         context.lineTo(x, y);
@@ -65,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
         context.moveTo(x, y);
     }
 
-    window.setShape = function(newShape) {
+    window.setShape = function (newShape) {
         shape = newShape;
     };
 
@@ -77,42 +108,4 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("creationArea").style.display = "flex";
         document.getElementById("nameDescription").style.display = "flex";
     };
-
-    window.clearCanvas = function() {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    };
-
-    window.submitCreation = async function() {
-        const name = document.getElementById('objectName').value;
-        const mainFunction = document.getElementById('mainFunction').value;
-        const image = canvas.toDataURL('image/png');
-
-        console.log(name);
-        console.log(mainFunction);
-        console.log(image);
-
-
-        const response = await fetch('/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, mainFunction, image })
-        });
-
-        const data = await response.json();
-        generateQRCode(data.qrCodeData);
-    };
-
-    function generateQRCode(data) {
-        const qrCanvas = document.getElementById('qrCodeCanvas');
-        const qrContext = qrCanvas.getContext('2d');
-        qrCanvas.width = 200;
-        qrCanvas.height = 200;
-
-        QRCode.toCanvas(qrCanvas, data, function (error) {
-            if (error) console.error(error);
-            document.getElementById('qrCodeContainer').style.display = 'block';
-        });
-    }
 });
