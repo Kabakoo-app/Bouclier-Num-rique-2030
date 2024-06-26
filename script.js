@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
     const canvas = document.getElementById('drawingCanvas');
+    const generateImage  = document.querySelector('.generateImage');
     canvas.width = windowWidth / 1.5 ;
     canvas.height = windowHeight - 200
 
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
-    let shape = 'circle';
+    let shape = 'line';
 
     // Écouteurs d'événements pour la souris
     canvas.addEventListener('mousedown', startDrawing);
@@ -116,18 +117,17 @@ document.addEventListener("DOMContentLoaded", function () {
     window.startCreation = function() {
         document.querySelector(".home").style.display = "none";
         document.querySelector(".header").style.display = "none";
-        document.querySelector(".button").style.display = "none";
+        document.querySelector(".button").style.display = "none";    
         document.querySelector(".creation-area").style.marginTop = "0";
         document.getElementById("creationArea").style.display = "flex";
         document.getElementById("nameDescription").style.display = "flex";
     };
 
     window.submitCreation = async function () {
-        const name = document.getElementById('objectName').value;
         const  description= document.getElementById('mainFunction').value;
+        document.querySelector(".loader").style.display = "flex";
         const sketch = canvas.toDataURL('image/png');
 
-        console.log(name);
         console.log(description);
         console.log(sketch);
 
@@ -136,11 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, sketch, description })
+            body: JSON.stringify({ sketch, description })
         });
 
         const data = await response.json();
         console.log(data);
+        generateImage.style.display = 'block';
         // generateQRCode(data.qrCodeData);
     };
 

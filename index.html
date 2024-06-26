@@ -66,14 +66,31 @@
             <canvas id="qrCodeCanvas"></canvas>
         </div>
 
-        <div class="loader" style="display: none;">
-           
+        <div class="loader" style="display: flex;">
+            <div class="loading" style="text-align: center;">
+                <dotlottie-player src="https://lottie.host/e6af3007-0ce2-4fb3-9207-0636dbf995ef/DCq0Q17ukA.lottie" background="transparent" speed="1" style="height: 120px;" loop autoplay></dotlottie-player>
+                <p style="color: #FFF;
+                text-align: center;
+                font-family: Poppins;
+                font-size: 23px;
+                font-style: normal;
+                font-weight: 300;
+                line-height: normal;">création en cours...</p>
+            </div>
+            <div class="generateImage" style="display: none;">
+                <img src="./assets/imageToShow.png" height="70%" width="70%" />
+            </div>
+            <div class="footer">
+                <img src="./assets/Kabakoo.svg" alt="logo" />
+                    <button class="restart" style="display: none;" onclick="restart()"></button>
+                <img src="./assets/Kabakoo.svg" alt="logo" />
+            </div>
         </div>
-
         <div class="gallery" id="gallery">
             <!-- Les créations récentes s'afficheront ici -->
         </div>
     </div>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <script src="script.js"></script>
 </body>
 </html>
