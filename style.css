@@ -10,9 +10,8 @@ body {
 }
 
 .active {
-    background-color: #ddd;
-    border: 2px solid #000;
-    background-color: indigo;
+    border: 1px solid #F2CD88;
+    color: #F2CD88;
 }
 
 .container {

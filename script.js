@@ -1,6 +1,9 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
     const API_URL = "https://goapi.kabakoo.africa";
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
     const canvas = document.getElementById('drawingCanvas');
     canvas.width = windowWidth / 1.5 ;
     canvas.height = windowHeight - 200
@@ -106,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.setShape = function (newShape, button) {
         shape = newShape;
-        const buttons = document.querySelectorAll('#creationArea button');
+        const buttons = document.querySelectorAll('.tools');
         buttons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
     };
