@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById('drawingCanvas');
     const context = canvas.getContext('2d');
     let isDrawing = false;
@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
+
+    // Événements tactiles pour les écrans tactiles
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
 
     function startDrawing(event) {
         isDrawing = true;
@@ -60,21 +65,21 @@ document.addEventListener("DOMContentLoaded", function() {
         context.moveTo(x, y);
     }
 
-    window.setShape = function(newShape) {
+    window.setShape = function (newShape) {
         shape = newShape;
     };
 
-    window.startCreation = function() {
+    window.startCreation = function () {
         document.querySelector(".button").style.display = "none";
         document.getElementById("creationArea").style.display = "flex";
         document.getElementById("nameDescription").style.display = "block";
     };
 
-    window.clearCanvas = function() {
+    window.clearCanvas = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
 
-    window.submitCreation = async function() {
+    window.submitCreation = async function () {
         const name = document.getElementById('objectName').value;
         const mainFunction = document.getElementById('mainFunction').value;
         const image = canvas.toDataURL('image/png');
