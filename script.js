@@ -128,14 +128,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.restart = function () {
         loader.style.display = 'none'
+        generateImage.style.display = 'none';
+        restartButton.style.display = 'none';
     }
 
     window.submitCreation = async function () {
         const  description= document.getElementById('mainFunction').value;
         loader.style.display = "flex";
         loading.style.display = "block"
-        generateImage.style.display = 'none';
-        restartButton.style.display = 'none';
         const sketch = canvas.toDataURL('image/png');
 
         console.log(description);
