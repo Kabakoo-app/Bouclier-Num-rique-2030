@@ -16,6 +16,11 @@ body {
     color: #F2CD88;
 }
 
+.imageGenerate
+{
+    border-radius: 20px;
+}
+
 .container {
     height: 100%;
 }
