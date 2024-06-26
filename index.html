@@ -4,26 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plateforme de Création d'Objet Futuriste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">Imagine un objet du futur pour protéger le Mali</div>
-        <button class="button" onclick="startCreation()">Commencer</button>
-
+        <div class="header">
+            <img src="./assets/Kabakoo.svg" class="logo" alt="logo" />
+        </div>
+        <section class="home">
+            <div class="header-title">
+                <h1 class="title">Bouclier Numérique 2030</h1>
+                <h1 class="description">Imagine un objet du futur pour protéger le Mali !</h1>
+            </div>
+            <button class="button" onclick="startCreation()"></button>
+        </section>
         <div class="creation-area" id="creationArea" style="display: none;">
-            <div class="drawing-area" style="border: 3px solid indigo;">
-                <canvas id="drawingCanvas" width="500" height="500"></canvas>
-                <div class="tools">
-                    <button onclick="setShape('circle', this)">Circle</button>
-                    <button onclick="setShape('square', this)">Square</button>
-                    <button onclick="setShape('line', this)">Line</button>
-                    <button onclick="setShape('eraser', this)">Eraser</button>
-                    <button onclick="clearCanvas()">Effacer</button>
+            <div class="drawing-area">
+                <div style="margin: 20px;">
+                    <img src="./assets/Kabakoo.svg" class="logo" alt="logo" />
+                </div>
+                <div style="position: relative;">
+                    <div style="position: absolute; top: 10px; left: 10px;">
+                        <div class="tools" style="margin-bottom: 10px;">
+                            <img src="./assets/brush.svg" alt="brush" />
+                        </div>
+                        <div class="tools">
+                            <img src="./assets/eraser.svg" alt="brush" />
+                        </div>
+                    </div>
+                <canvas id="drawingCanvas" height="500"></canvas>
+                </div>
+                <div class="name-description" id="nameDescription" style="display: none;">
+                    <select id="mainFunction" class="custom-select">
+                        <option value="Protection contre la désinformation médiatique">Protection contre la désinformation médiatique</option>
+                        <option value="Sécurisation des transactions économiques">Sécurisation des transactions économiques</option>
+                        <option value="Détection et neutralisation des influences étrangères malveillantes">Détection et neutralisation des influences étrangères malveillantes</option>
+                        <option value="Résistance aux attaques économiques et financières">Résistance aux attaques économiques et financières</option>
+                        <option value="Préservation et promotion de la culture et des savoir-faire maliens">Préservation et promotion de la culture et des savoir-faire maliens</option>
+                        <option value="Renforcement de la cohésion sociale face aux menaces externes">Renforcement de la cohésion sociale face aux menaces externes</option>
+                    </select>
+                    <button class="button-continue" onclick="submitCreation()"></button>
                 </div>
             </div>
             <div class="description-area">
-                <p>Mali 2030 : Un pays résilient face aux défis mondiaux</p>
+                <p class="title">Mali 2030 : Un pays résilient face aux défis mondiaux</p>
+                <div class="description-object">
                 <ul>
                     <li>Des campagnes de désinformation massives visent à déstabiliser notre société</li>
                     <li>Des campagnes économiques illégales et des attaques financières menacent notre prospérité</li>
@@ -31,25 +57,17 @@
                 </ul>
                 <p>Imagine un objet innovant pour renforcer notre résilience face à ces défis, tout en préservant notre indépendance et l’amélioration des conditions des vies des populations maliennes et sahéliennes.</p>
                 <p>Ta créativité peut contribuer à un avenir plus juste et prospère pour le Mali !</p>
+                </div>
             </div>
-        </div>
-
-        <div class="name-description" id="nameDescription" style="display: none;">
-            <input type="text" id="objectName" placeholder="Nom de l'objet">
-            <select id="mainFunction">
-                <option value="Protection contre la désinformation médiatique">Protection contre la désinformation médiatique</option>
-                <option value="Sécurisation des transactions économiques">Sécurisation des transactions économiques</option>
-                <option value="Détection et neutralisation des influences étrangères malveillantes">Détection et neutralisation des influences étrangères malveillantes</option>
-                <option value="Résistance aux attaques économiques et financières">Résistance aux attaques économiques et financières</option>
-                <option value="Préservation et promotion de la culture et des savoir-faire maliens">Préservation et promotion de la culture et des savoir-faire maliens</option>
-                <option value="Renforcement de la cohésion sociale face aux menaces externes">Renforcement de la cohésion sociale face aux menaces externes</option>
-            </select>
-            <button onclick="submitCreation()">Soumettre</button>
         </div>
 
         <div id="qrCodeContainer" style="display: none;">
             <p>Scannez le QR code pour partager votre création :</p>
             <canvas id="qrCodeCanvas"></canvas>
+        </div>
+
+        <div class="loader" style="display: none;">
+           
         </div>
 
         <div class="gallery" id="gallery">

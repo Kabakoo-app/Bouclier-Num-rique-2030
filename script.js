@@ -2,6 +2,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const API_URL = "https://goapi.kabakoo.africa";
     const canvas = document.getElementById('drawingCanvas');
+    canvas.width = windowWidth / 1.5 ;
+    canvas.height = windowHeight - 200
+
     const context = canvas.getContext('2d');
     let isDrawing = false;
     let lastX = 0;
@@ -108,14 +111,13 @@ document.addEventListener("DOMContentLoaded", function () {
         button.classList.add('active');
     };
 
-    window.clearCanvas = function () {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    };
-
-    window.startCreation = function () {
+    window.startCreation = function() {
+        document.querySelector(".home").style.display = "none";
+        document.querySelector(".header").style.display = "none";
         document.querySelector(".button").style.display = "none";
+        document.querySelector(".creation-area").style.marginTop = "0";
         document.getElementById("creationArea").style.display = "flex";
-        document.getElementById("nameDescription").style.display = "block";
+        document.getElementById("nameDescription").style.display = "flex";
     };
 
     window.submitCreation = async function () {
