@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_URL = "https://goapi.kabakoo.africa";
     const canvas = document.getElementById('drawingCanvas');
     const imageGenerate  = document.querySelector('.imageGenerate');
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
 
     const home = document.querySelector(".home");
     const header = document.querySelector(".header");

@@ -100,7 +100,7 @@
        
 
         window.addEventListener('load', () => {
-            render();
+            // render();
         });
 
         const requestEnhancedSketch = async function () {
@@ -120,7 +120,7 @@
                 localStorage.setItem('img', result.data.enhanced_sketch_uri);
 
                 // Rendre à nouveau l'image après mise à jour
-                render();
+                // render();
             } catch (error) {
                 console.error('Erreur:', error);
             }
