@@ -1,9 +1,14 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     const API_URL = "https://goapi.kabakoo.africa";
-    const canvas = document.getElementById('drawingCanvas');
-    const imageGenerate  = document.querySelector('.imageGenerate');
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
+    const loader = document.querySelector(".loader")
+    const loading = document.querySelector(".loading")
+    const canvas = document.getElementById('drawingCanvas');
+    const generateImage  = document.querySelector('.generateImage');
+    const restartButton  = document.querySelector('.restart');
+    const imageGenerate  = document.querySelector('.imageGenerate');
 
     const home = document.querySelector(".home");
     const header = document.querySelector(".header");
@@ -13,35 +18,20 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.height = windowHeight - 200
 
     const context = canvas.getContext('2d');
-    const loader = document.querySelector(".loader");
-    const loading = document.querySelector(".loading");
-    const generateImage = document.querySelector('.generateImage');
-    const restartButton = document.querySelector('.restart');
-    
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
     let shape = 'line';
 
-    setupCanvas();
+    // Écouteurs d'événements pour la souris
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
 
-    function setupCanvas() {
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', draw);
-        canvas.addEventListener('touchend', stopDrawing);
-    }
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth / 1.5;
-        canvas.height = window.innerHeight - 200;
-    }
+    // Événements tactiles pour les écrans tactiles
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', stopDrawing);
 
     function startDrawing(event) {
         isDrawing = true;
@@ -75,6 +65,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         lastX = x;
         lastY = y;
+    }
+
+    function handleTouchStart(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        isDrawing = true;
+        [lastX, lastY] = [touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop];
+        draw(event);
+    }
+
+    function handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        draw(event);
     }
 
     function stopDrawing() {
@@ -147,6 +151,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 }
 
+    window.setShape = function (newShape, button) {
+        shape = newShape;
+        const buttons = document.querySelectorAll('#creationArea button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    };
+
     window.startCreation = function() {
         document.querySelector(".home").style.display = "none";
         document.querySelector(".header").style.display = "none";
@@ -180,80 +191,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // generateQRCode(data.qrCodeData);
     };
 
-    window.restart = function () {
-        loader.style.display = 'none';
-        generateImage.style.display = 'none';
-        restartButton.style.display = 'none';
-    };
+    function generateQRCode(data) {
+        const qrCanvas = document.getElementById('qrCodeCanvas');
+        const qrContext = qrCanvas.getContext('2d');
+        qrCanvas.width = 200;
+        qrCanvas.height = 200;
 
-    window.submitCreation = async function () {
-        const description = document.getElementById('mainFunction').value;
-        loader.style.display = "flex";
-        loading.style.display = "block";
-        const sketch = canvas.toDataURL('image/png');
-
-        try {
-            const response = await fetch(`${API_URL}/media/enhance_sketch/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ sketch, description })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Erreur: ${response.status} - ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            console.log(data);
-            requestEnhancedSketch();
-
-            loading.style.display = "none";
-            generateImage.style.display = 'block';
-            restartButton.style.display = 'block';
-        } catch (error) {
-            console.error('Erreur lors de la soumission:', error);
-        }
-    };
-
-    const requestEnhancedSketch = async function () {
-        try {
-            const response = await fetch(`${API_URL}/media/get_enhanced_sketch?user_uid=60d8e13d-d318-4f9c-b077-5e2e68ecf4aa`);
-            if (!response.ok) {
-                throw new Error(`Erreur: ${response.status} - ${response.statusText}`);
-            }
-
-            const result = await response.json();
-            console.log(result);
-            render();
-            localStorage.setItem('img', JSON.stringify(result));
-        } catch (error) {
-            console.error('Erreur lors de la récupération de l\'esquisse améliorée:', error);
-        }
-    };
-
-    function render() {
-        const imageUrl = localStorage.getItem('img');
-        if (imageUrl) {
-            const imgElement = document.createElement('img');
-            imgElement.height = '100px';
-            imgElement.width = '100px';
-            imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${imageUrl}`;
-
-            const container = document.getElementById('generateImage');
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
-            container.appendChild(imgElement);
-        } else {
-            console.error('Aucune URL d\'image trouvée dans le localStorage.');
-        }
+        QRCode.toCanvas(qrCanvas, data, function (error) {
+            if (error) console.error(error);
+            document.getElementById('qrCodeContainer').style.display = 'block';
+        });
     }
-    window.clearCanvas = function () {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    };
-
-    // Appel initial de la fonction requestEnhancedSketch
-    // setInterval(requestEnhancedSketch, 3000);
 });
+
