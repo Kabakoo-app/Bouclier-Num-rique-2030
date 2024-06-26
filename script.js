@@ -3,8 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_URL = "https://goapi.kabakoo.africa";
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
+    const loader = document.querySelector(".loader")
+    const loading = document.querySelector(".loading")
     const canvas = document.getElementById('drawingCanvas');
     const generateImage  = document.querySelector('.generateImage');
+    const restartButton  = document.querySelector('.restart');
     canvas.width = windowWidth / 1.5 ;
     canvas.height = windowHeight - 200
 
@@ -123,9 +126,16 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("nameDescription").style.display = "flex";
     };
 
+    window.restart = function () {
+        loader.style.display = 'none'
+    }
+
     window.submitCreation = async function () {
         const  description= document.getElementById('mainFunction').value;
-        document.querySelector(".loader").style.display = "flex";
+        loader.style.display = "flex";
+        loading.style.display = "block"
+        generateImage.style.display = 'none';
+        restartButton.style.display = 'none';
         const sketch = canvas.toDataURL('image/png');
 
         console.log(description);
@@ -141,7 +151,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const data = await response.json();
         console.log(data);
+        loading.style.display = "none"
         generateImage.style.display = 'block';
+        restartButton.style.display = 'block';
         // generateQRCode(data.qrCodeData);
     };
 
