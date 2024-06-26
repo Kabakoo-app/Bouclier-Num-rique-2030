@@ -102,6 +102,8 @@ body {
     height: 100%;
     width: 100%;
     background: #513F59;
+    align-items: center;
+    justify-content: center;
 }
 
 .description-area {
@@ -114,18 +116,18 @@ body {
 
 .description-object {
     color: #F5E3E3;
-    text-shadow: 0px 2.08px 4.159px rgba(0, 0, 0, 0.14), 0px 2.08px 2.08px rgba(0, 0, 0, 0.12), 0px 2.08px 4.159px rgba(0, 0, 0, 0.20);
     font-family: Poppins;
-    font-size: 16px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
-    line-height: normal;
+    line-height: 2;
+    text-shadow: 0px 2.08px 4.159px rgba(0, 0, 0, 0.14), 0px 2.08px 2.08px rgba(0, 0, 0, 0.12), 0px 2.08px 4.159px rgba(0, 0, 0, 0.20);
 }
 
 .description-area .title {
     color: #F0B1B1;
     font-family: Poppins;
-    font-size: 24px;
+    font-size: 32px;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -134,8 +136,12 @@ body {
 }
 
 
-.description-area {
-
+.footer {
+    display: flex;
+    width: 95%;
+    bottom: 10px;
+    position: absolute;
+    justify-content: space-between;
 }
 
 .tools {
@@ -149,6 +155,7 @@ body {
 }
 
 .name-description {
+    gap: 10px;
     margin-top: 10px;
     align-items: center;
     justify-content: center;
@@ -176,10 +183,21 @@ body {
 }
 
 .button-continue {
-    height: 50px;
+    height: 40px;
     width: 145px;
-    background: url('./assets/button-continue.svg');
-    background-size: cover; 
     border: none;
     cursor: pointer;
+    background: url('./assets/button-continue-active.svg');
+    background-size: contain; 
+    background-repeat: no-repeat;
+}
+
+button.restart {
+    height: 90px;
+    width: 210px;
+    border: none;
+    cursor: pointer;
+    background: url('./assets/restart.svg');
+    background-size: contain; 
+    background-repeat: no-repeat;
 }
