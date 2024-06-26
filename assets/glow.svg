@@ -1,0 +1,19 @@
+<svg width="1920" height="14" viewBox="0 0 1920 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g style="mix-blend-mode:overlay" opacity="0.5">
+<ellipse cx="958" cy="7" rx="962" ry="6.99992" transform="rotate(-180 958 7)" fill="url(#paint0_radial_2_92)"/>
+</g>
+<g style="mix-blend-mode:overlay">
+<rect x="-1" y="7" width="1921" height="3" fill="url(#paint1_linear_2_92)"/>
+</g>
+<defs>
+<radialGradient id="paint0_radial_2_92" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(958 7) rotate(90) scale(6.99992 962)">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="paint1_linear_2_92" x1="1909.3" y1="7" x2="-5.82903" y2="7" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0"/>
+<stop offset="0.492063" stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
