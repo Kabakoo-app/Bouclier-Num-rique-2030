@@ -1,6 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const API_URL = "https://goapi.kabakoo.africa";
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
     const canvas = document.getElementById('drawingCanvas');
     canvas.width = windowWidth / 1.5 ;
     canvas.height = windowHeight - 200
