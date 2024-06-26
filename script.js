@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!description.length) {
-            return alert("Tu dois choisir la fonction principale de ton objet avant de pouvoir continuer.")
+            return alert()
         }
         loader.style.display = "flex";
         loading.style.display = "block"
