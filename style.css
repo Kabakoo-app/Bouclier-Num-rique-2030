@@ -9,6 +9,8 @@ body {
     padding: 0;
 }
 
+
+
 .active {
     border: 1px solid #F2CD88;
     color: #F2CD88;
@@ -38,6 +40,18 @@ body {
     background-image: url('./assets/glow.svg');
     background-repeat: no-repeat;
     background-position: center bottom;
+}
+.generateImage
+{
+    width: 90vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+}
+#generatedImageContainer
+{
+    width: 100%;
+    height: 100%;
 }
 
 .header .logo {

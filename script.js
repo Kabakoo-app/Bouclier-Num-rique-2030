@@ -1,29 +1,32 @@
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const API_URL = "https://goapi.kabakoo.africa";
-    const windowWidth = window.innerWidth
-    const windowHeight = window.innerHeight
     const canvas = document.getElementById('drawingCanvas');
-    const generateImage  = document.querySelector('.generateImage');
-    canvas.width = windowWidth / 1.5 ;
-    canvas.height = windowHeight - 200
-
+    const generateImage = document.querySelector('.generateImage');
     const context = canvas.getContext('2d');
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
     let shape = 'line';
 
-    // Écouteurs d'événements pour la souris
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
+    setupCanvas();
 
-    // Événements tactiles pour les écrans tactiles
-    canvas.addEventListener('touchstart', handleTouchStart);
-    canvas.addEventListener('touchmove', handleTouchMove);
-    canvas.addEventListener('touchend', stopDrawing);
+    function setupCanvas() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        canvas.width = windowWidth / 1.5;
+        canvas.height = windowHeight - 200;
+
+        // Écouteurs d'événements pour la souris
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+
+        // Événements tactiles pour les écrans tactiles
+        canvas.addEventListener('touchstart', handleTouchStart);
+        canvas.addEventListener('touchmove', handleTouchMove);
+        canvas.addEventListener('touchend', stopDrawing);
+    }
 
     function startDrawing(event) {
         isDrawing = true;
@@ -115,73 +118,71 @@ document.addEventListener("DOMContentLoaded", function () {
         button.classList.add('active');
     };
 
-    window.startCreation = function() {
+    window.startCreation = function () {
         document.querySelector(".home").style.display = "none";
         document.querySelector(".header").style.display = "none";
-        document.querySelector(".button").style.display = "none";    
+        document.querySelector(".button").style.display = "none";
         document.querySelector(".creation-area").style.marginTop = "0";
         document.getElementById("creationArea").style.display = "flex";
         document.getElementById("nameDescription").style.display = "flex";
     };
 
     window.submitCreation = async function () {
-        const  description= document.getElementById('mainFunction').value;
+        const description = document.getElementById('mainFunction').value;
         document.querySelector(".loader").style.display = "flex";
         const sketch = canvas.toDataURL('image/png');
 
-        console.log(description);
-        console.log(sketch);
+        try {
+            const response = await fetch(`${API_URL}/media/enhance_sketch/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sketch, description })
+            });
 
-        const response = await fetch(`${API_URL}/media/enhance_sketch/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sketch, description })
-        });
+            if (!response.ok) {
+                throw new Error(`Erreur: ${response.status} - ${response.statusText}`);
+            }
 
-        const data = await response.json();
-        console.log(data);
-        requestEnhancedSketch()
-        generateImage.style.display = 'block';
-        // generateQRCode(data.qrCodeData);
+            const data = await response.json();
+            console.log(data);
+            // generateImage.style.display = 'block';
+            // generateQRCode(data.qrCodeData);
+            requestEnhancedSketch();
+
+
+        } catch (error) {
+            console.error('Erreur:', error);
+        } finally {
+            document.querySelector(".loader").style.display = "none";
+        }
     };
 
     window.clearCanvas = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
 
+    const requestEnhancedSketch = async function () {
+        const requestOptions = {
+            method: "GET"
+        };
 
-    window.requestEnhancedSketch = async function () {
-        const sketchId = "60d8e13d-d318-4f9c-b077-5e2e68ecf4aa"; // Remplace par l'ID réel de l'utilisateur ou de l'esquisse
-        const response = await fetch(`${API_URL}/media/get_enhanced_sketch/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sketch_id: sketchId })
-        });
+        try {
+            const response = await fetch(`${API_URL}/media/get_enhanced_sketch?user_uid=60d8e13d-d318-4f9c-b077-5e2e68ecf4aa`, requestOptions);
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            localStorage.setItem('img', data)
-            // Traite les données reçues de l'API ici
-        } else {
-            console.error('Erreur lors de la récupération de l\'esquisse améliorée');
+            if (!response.ok) {
+                throw new Error(`Erreur: ${response.status} - ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log(result);
+            localStorage.setItem('img', JSON.stringify(result));
+        } catch (error) {
+            console.error('Erreur:', error);
         }
     };
 
-    // function generateQRCode(data) {
-    //     const qrCanvas = document.getElementById('qrCodeCanvas');
-    //     const qrContext = qrCanvas.getContext('2d');
-    //     qrCanvas.width = 200;
-    //     qrCanvas.height = 200;
+    // Appel de la fonction requestEnhancedSketch
 
-    //     QRCode.toCanvas(qrCanvas, data, function (error) {
-    //         if (error) console.error(error);
-    //         document.getElementById('qrCodeContainer').style.display = 'block';
-    //     });
-    
 });
-
