@@ -1,4 +1,6 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+    const API_URL = "https://goapi.kabakoo.africa";
     const canvas = document.getElementById('drawingCanvas');
     const context = canvas.getContext('2d');
     let isDrawing = false;
@@ -42,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
             drawSquare(x, y);
         } else if (shape === 'line') {
             drawLine(x, y);
+        } else if (shape === 'eraser') {
+            erase(x, y);
         }
 
         lastX = x;
@@ -93,8 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
         context.moveTo(x, y);
     }
 
-    window.setShape = function (newShape) {
+    function erase(x, y) {
+        context.clearRect(x - 10, y - 10, 20, 20);
+    }
+
+    window.setShape = function (newShape, button) {
         shape = newShape;
+        const buttons = document.querySelectorAll('#creationArea button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
     };
 
     window.clearCanvas = function () {
@@ -106,4 +117,39 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("creationArea").style.display = "flex";
         document.getElementById("nameDescription").style.display = "block";
     };
+
+    window.submitCreation = async function () {
+        const name = document.getElementById('objectName').value;
+        const  description= document.getElementById('mainFunction').value;
+        const sketch = canvas.toDataURL('image/png');
+
+        console.log(name);
+        console.log(description);
+        console.log(sketch);
+
+        const response = await fetch(`${API_URL}/media/enhance_sketch/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, sketch, description })
+        });
+
+        const data = await response.json();
+        console.log(data);
+        // generateQRCode(data.qrCodeData);
+    };
+
+    function generateQRCode(data) {
+        const qrCanvas = document.getElementById('qrCodeCanvas');
+        const qrContext = qrCanvas.getContext('2d');
+        qrCanvas.width = 200;
+        qrCanvas.height = 200;
+
+        QRCode.toCanvas(qrCanvas, data, function (error) {
+            if (error) console.error(error);
+            document.getElementById('qrCodeContainer').style.display = 'block';
+        });
+    }
 });
+

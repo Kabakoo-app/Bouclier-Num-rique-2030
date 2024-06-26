@@ -15,9 +15,10 @@
             <div class="drawing-area" style="border: 3px solid indigo;">
                 <canvas id="drawingCanvas" width="500" height="500"></canvas>
                 <div class="tools">
-                    <button onclick="setShape('circle')">Cercle</button>
-                    <button onclick="setShape('square')">Carré</button>
-                    <button onclick="setShape('line')">Ligne</button>
+                    <button onclick="setShape('circle', this)">Circle</button>
+                    <button onclick="setShape('square', this)">Square</button>
+                    <button onclick="setShape('line', this)">Line</button>
+                    <button onclick="setShape('eraser', this)">Eraser</button>
                     <button onclick="clearCanvas()">Effacer</button>
                 </div>
             </div>

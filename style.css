@@ -6,6 +6,12 @@ body {
     padding: 0;
 }
 
+.active {
+    background-color: #ddd;
+    border: 2px solid #000;
+    background-color: indigo;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
