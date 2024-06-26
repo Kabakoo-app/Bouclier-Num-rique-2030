@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const data = await response.json();
         console.log(data);
+        requestEnhancedSketch()
         // generateQRCode(data.qrCodeData);
     };
 
@@ -150,16 +151,36 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-    function generateQRCode(data) {
-        const qrCanvas = document.getElementById('qrCodeCanvas');
-        const qrContext = qrCanvas.getContext('2d');
-        qrCanvas.width = 200;
-        qrCanvas.height = 200;
-
-        QRCode.toCanvas(qrCanvas, data, function (error) {
-            if (error) console.error(error);
-            document.getElementById('qrCodeContainer').style.display = 'block';
+    window.requestEnhancedSketch = async function () {
+        const sketchId = "60d8e13d-d318-4f9c-b077-5e2e68ecf4aa"; // Remplace par l'ID réel de l'utilisateur ou de l'esquisse
+        const response = await fetch(`${API_URL}/media/get_enhanced_sketch/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sketch_id: sketchId })
         });
-    }
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            localStorage.setItem('img', data)
+            // Traite les données reçues de l'API ici
+        } else {
+            console.error('Erreur lors de la récupération de l\'esquisse améliorée');
+        }
+    };
+
+    // function generateQRCode(data) {
+    //     const qrCanvas = document.getElementById('qrCodeCanvas');
+    //     const qrContext = qrCanvas.getContext('2d');
+    //     qrCanvas.width = 200;
+    //     qrCanvas.height = 200;
+
+    //     QRCode.toCanvas(qrCanvas, data, function (error) {
+    //         if (error) console.error(error);
+    //         document.getElementById('qrCodeContainer').style.display = 'block';
+    //     });
+    
 });
 
