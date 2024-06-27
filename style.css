@@ -1,6 +1,8 @@
-html, body {
+html,
+body {
     height: 100%;
 }
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -16,8 +18,7 @@ body {
     color: #F2CD88;
 }
 
-.imageGenerate
-{
+.imageGenerate {
     border-radius: 20px;
 }
 
@@ -28,6 +29,15 @@ body {
 .home {
     height: 80%;
     display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+}
+
+.home .first-child,
+.home .last-child {
+    width: 50%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -37,7 +47,9 @@ body {
     font-size: 2em;
     background: #795879;
     margin-bottom: 20px;
+    z-index: 900000;
 }
+
 .header::after {
     content: "";
     display: block;
@@ -46,15 +58,15 @@ body {
     background-repeat: no-repeat;
     background-position: center bottom;
 }
-.generateImage
-{
+
+.generateImage {
     width: 90vw;
     height: 80vh;
     display: flex;
     justify-content: center;
 }
-#generatedImageContainer
-{
+
+#generatedImageContainer {
     width: 100%;
     height: 100%;
 }
@@ -63,8 +75,9 @@ body {
     height: 40px;
     margin-top: 15px;
 }
+
 .header-title {
-    width: 60%;
+    width: 80%;
 }
 
 .title {
@@ -106,6 +119,7 @@ body {
     justify-content: space-between;
     margin-top: 20px;
 }
+
 .drawing-area {
     margin: 20px 20px 0 20px;
 }
@@ -164,12 +178,12 @@ body {
 }
 
 .tools {
-    background-color: rgba(121, 88, 121, 1); 
+    background-color: rgba(121, 88, 121, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px; 
-    height: 80px; 
+    width: 80px;
+    height: 80px;
     border-radius: 10px;
 }
 
@@ -188,13 +202,13 @@ body {
     height: 40px;
     padding: 5px;
     font-size: 16px;
-    appearance: none; 
+    appearance: none;
     border-radius: 4px;
     border-width: 0;
-    -webkit-appearance: none; 
+    -webkit-appearance: none;
     -moz-appearance: none;
-    color: rgba(242, 239, 233, 1); 
-    background-color: rgba(121, 88, 121, 1); 
+    color: rgba(242, 239, 233, 1);
+    background-color: rgba(121, 88, 121, 1);
     background-image: url('./assets/arrow-down.svg');
     background-size: 5%;
     background-repeat: no-repeat;
@@ -207,7 +221,7 @@ body {
     border: none;
     cursor: pointer;
     background: url('./assets/button-continue-active.svg');
-    background-size: contain; 
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
@@ -217,6 +231,136 @@ button.restart {
     border: none;
     cursor: pointer;
     background: url('./assets/restart.svg');
-    background-size: contain; 
+    background-size: contain;
     background-repeat: no-repeat;
+}
+
+
+.gallery-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.last-child {
+    margin-top: 78px;
+    background: #795879;
+    height: 93vh;
+}
+
+.last-child .title-galerie {
+    margin-top: 50px;
+    height: 10%;
+
+    color: #F0B1B1;
+    text-align: center;
+    text-shadow: 0px 2.08px 4.159px rgba(0, 0, 0, 0.14), 0px 2.08px 2.08px rgba(0, 0, 0, 0.12), 0px 2.08px 4.159px rgba(0, 0, 0, 0.20);
+    font-family: Poppins;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    /* Espace entre les images */
+}
+
+.image-container figure {
+    margin: 0;
+    /* Enlève les marges par défaut de la balise figure */
+}
+
+.image-container img {
+    width: 95%;
+    height: auto;
+    display: block;
+    /* Pour enlever l'espace blanc en dessous des images */
+    border-radius: 15px;
+    margin-left: 15px;
+}
+
+.image-container figcaption, .popup-caption {
+    color: #F2EFE9;
+    font-family: Poppins;
+    font-size: 30.43px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-top: 5px;
+    /* Espacement au-dessus de la légende */
+}
+
+.gallery {
+    display: flex;
+    justify-content: center;
+
+    gap: 15px;
+    z-index: 0.3;
+    width: 100%;
+    animation: scroll 60s linear infinite;
+}
+
+.image-container img {
+    cursor: pointer;
+    border-radius: 15px;
+    transition: transform 0.2s;
+}
+
+.image-container img:hover {
+    transform: scale(1.1);
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-img {
+    max-width: 70%;
+    max-height: 70%;
+    border-radius: 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 280px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background-color: #795879;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

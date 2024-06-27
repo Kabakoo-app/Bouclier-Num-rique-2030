@@ -10,10 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const restartButton = document.querySelector('.restart');
     const imageGenerate = document.querySelector('.imageGenerate');
 
-    const home = document.querySelector(".home");
-    const header = document.querySelector(".header");
-    const button = document.querySelector(".button");
-
+  
     canvas.width = windowWidth / 1.5;
     canvas.height = windowHeight - 200
 
@@ -177,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!description.length) {
-            return alert()
+            return alert("Tu dois choisir la fonction principale de ton objet avant de pouvoir continuer.")
         }
         loader.style.display = "flex";
         loading.style.display = "block"

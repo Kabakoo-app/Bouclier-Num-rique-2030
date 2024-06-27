@@ -1,274 +1,179 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie d'Images</title>
     <style>
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-        color: #0056b3;
-        background-color: #3a1a58; /* Couleur de fond générale */
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
 
-      #container {
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-      }
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            white-space: nowrap;
+        }
 
-      #drawing-section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        box-sizing: border-box;
-      }
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            animation: scroll 60s linear infinite;
+        }
 
-      #canvas {
-        border-radius: 10px;
-        background-color: #f8f6f0;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        width: 100%;
-        height: 80%;
-      }
+        .gallery-row {
+            display: flex;
+            gap: 10px;
+        }
 
-      #controls {
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-      }
+        .gallery-item {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-      #controls button,
-      #controls input[type="color"],
-      #controls input[type="range"] {
-        margin: 5px;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      }
+        .gallery-item:hover {
+            transform: scale(1.1);
+        }
 
-      #controls button {
-        background: #3a1a58;
-        color: #fff;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
+        @keyframes scroll {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
 
-      #controls button:hover {
-        background: #290f3b;
-      }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
 
-      #message-section {
-        width: 30%;
-        padding: 20px;
-        background-color: #7c5581; /* Couleur de fond du message */
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+        .popup-img {
+            max-width: 90%;
+            max-height: 90%;
+        }
 
-      #message-section h1 {
-        margin-bottom: 20px;
-        font-size: 24px;
-      }
-
-      #message-section ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      #message-section li {
-        margin-bottom: 10px;
-        font-size: 18px;
-      }
-
-      #message-section button {
-        margin-top: 20px;
-        padding: 10px;
-        background: #e0a15b;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background 0.3s;
-      }
-
-      #message-section button:hover {
-        background: #c38f50;
-      }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
     </style>
-  </head>
-  <body>
-    <div id="container">
-      <div id="drawing-section">
-        <canvas id="canvas"></canvas>
-        <div id="controls">
-          <button id="pen"><img src="path/to/pen-icon.png" alt="Pen" /></button>
-          <button id="eraser">
-            <img src="path/to/eraser-icon.png" alt="Eraser" />
-          </button>
-          <input type="color" id="colorPicker" />
-          <input type="range" id="sizePicker" min="1" max="10" value="5" />
-          <button id="undo">Undo</button>
-          <button onclick="redo()">Redo</button>
-          <button onclick="validate()">Validate</button>
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery" id="gallery">
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <div class="gallery-row">
+                <img src="./assets/images/IMG_0428.JPG" alt="Image 1" class="gallery-item">
+                <img src="./assets/images/IMG_0430 (1).JPG" alt="Image 2" class="gallery-item">
+            </div>
+            <!-- Ajoutez plus de rangées ici -->
         </div>
-      </div>
-      <div id="message-section">
-        <h1>MALI 2030 : UN PAYS RÉSILIENT FACE AUX DÉFIS MONDIAUX</h1>
-        <ul>
-          <li>
-            Des campagnes de désinformation massives visent à déstabiliser notre
-            société
-          </li>
-          <li>
-            Des campagnes économiques illégales et des attaques financières
-            menacent notre prospérité
-          </li>
-          <li>
-            Notre souveraineté et notre capacité à définir notre propre voie
-            sont mises à l'épreuve par des pressions extérieures
-          </li>
-        </ul>
-        <button>Continuer</button>
-      </div>
+    </div>
+    <div class="popup" id="popup">
+        <span class="close-btn" id="closeBtn">&times;</span>
+        <img class="popup-img" id="popupImg" src="" alt="Popup Image">
     </div>
     <script>
-      var canvas = document.getElementById("canvas");
-      var ctx = canvas.getContext("2d");
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const popup = document.getElementById('popup');
+            const popupImg = document.getElementById('popupImg');
+            const closeBtn = document.getElementById('closeBtn');
+            const gallery = document.getElementById('gallery');
+            let scrollInterval;
 
-      function resizeCanvas() {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-      }
+            const startScroll = () => {
+                scrollInterval = setInterval(() => {
+                    gallery.style.transform = `translateY(${gallery.offsetTop - 1}px)`;
+                    if (gallery.offsetTop + gallery.offsetHeight < 0) {
+                        gallery.style.transform = 'translateY(100%)';
+                    }
+                }, 500);
+            };
 
-      window.addEventListener("resize", resizeCanvas, false);
-      resizeCanvas();
+            const stopScroll = () => {
+                clearInterval(scrollInterval);
+            };
 
-      var painting = false;
-      var color = "#000000";
-      var size = 5;
-      var lastX, lastY;
-      var points = [];
-      var redoStack = [];
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    stopScroll();
+                    popupImg.src = item.src;
+                    popup.style.display = 'flex';
+                });
+            });
 
-      function startPainting(x, y) {
-        painting = true;
-        lastX = x - canvas.offsetLeft;
-        lastY = y - canvas.offsetTop;
-      }
+            closeBtn.addEventListener('click', () => {
+                popup.style.display = 'none';
+                startScroll();
+            });
 
-      function stopPainting() {
-        painting = false;
-        points.push("end");
-      }
+            popup.addEventListener('click', (event) => {
+                if (event.target === popup) {
+                    popup.style.display = 'none';
+                    startScroll();
+                }
+            });
 
-      function drawLine(x, y) {
-        if (!painting) return;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(x - canvas.offsetLeft, y - canvas.offsetTop);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = size;
-        ctx.stroke();
-        lastX = x - canvas.offsetLeft;
-        lastY = y - canvas.offsetTop;
-
-        points.push({ x: lastX, y: lastY, color: color, size: size });
-      }
-
-      canvas.addEventListener("mousedown", function (e) {
-        startPainting(e.pageX, e.pageY);
-      });
-
-      canvas.addEventListener("mouseup", stopPainting);
-
-      canvas.addEventListener("mousemove", function (e) {
-        drawLine(e.pageX, e.pageY);
-      });
-
-      canvas.addEventListener("touchstart", function (e) {
-        var touch = e.touches[0];
-        startPainting(touch.pageX, touch.pageY);
-      });
-
-      canvas.addEventListener("touchend", stopPainting);
-
-      canvas.addEventListener("touchmove", function (e) {
-        var touch = e.touches[0];
-        drawLine(touch.pageX, touch.pageY);
-        e.preventDefault();
-      });
-
-      document.getElementById("colorPicker").onchange = function () {
-        color = this.value;
-      };
-
-      document.getElementById("sizePicker").onchange = function () {
-        size = this.value;
-      };
-
-      function undo() {
-        if (points.length) {
-          var point = points.pop();
-          while (point !== "end") {
-            redoStack.push(point);
-            point = points.pop();
-          }
-          redraw();
-        }
-      }
-
-      function redo() {
-        if (redoStack.length) {
-          var point = redoStack.pop();
-          while (point !== "end") {
-            points.push(point);
-            point = redoStack.pop();
-          }
-          points.push("end");
-          redraw();
-        }
-      }
-
-      function validate() {
-        var dataUrl = canvas.toDataURL();
-        console.log(dataUrl);
-        // Add your validation logic here
-      }
-
-      function redraw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (var i = 0; i < points.length; i++) {
-          if (points[i] === "end") {
-            lastX = undefined;
-            lastY = undefined;
-            continue;
-          }
-          ctx.beginPath();
-          if (lastX !== undefined && lastY !== undefined) {
-            ctx.moveTo(lastX, lastY);
-          }
-          ctx.lineTo(points[i].x, points[i].y);
-          ctx.strokeStyle = points[i].color;
-          ctx.lineWidth = points[i].size;
-          ctx.stroke();
-          lastX = points[i].x;
-          lastY = points[i].y;
-        }
-      }
+            startScroll();
+        });
     </script>
-  </body>
+</body>
 </html>

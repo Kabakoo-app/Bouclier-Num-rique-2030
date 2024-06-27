@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plateforme de Création d'Objet Futuriste</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -15,11 +17,25 @@
             <img src="./assets/Kabakoo.svg" class="logo" alt="logo" />
         </div>
         <section class="home">
-            <div class="header-title">
-                <h1 class="title">Bouclier Numérique 2030</h1>
-                <h1 class="description">Imagine un <strong>objet du futur</strong> pour protéger le Mali !</h1>
+            <div class="first-child">
+
+                <div class="header-title">
+                    <h1 class="title">Bouclier Numérique 2030</h1>
+                    <h2 class="description">Imagine un <strong>objet du futur</strong> pour protéger le Mali !</h2>
+                </div>
+                <button class="button" onclick="startCreation()"></button>
             </div>
-            <button class="button" onclick="startCreation()"></button>
+            <div class="last-child">
+                <div class="title-galerie">
+                    Galerie d'images </div>
+                <div class="gallery-container" style="display: flex;justify-content: center;">
+                    <div class="gallery" id="gallery">
+                        <div class="image-container" id="image-container">
+                            <!-- Ajoute autant d'images avec légendes que nécessaire -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
         <div class="creation-area" id="creationArea" style="display: none;">
             <div class="drawing-area">
@@ -57,13 +73,17 @@
                 <p class="title">Mali 2030 : Un pays résilient face aux défis mondiaux</p>
                 <div class="description-object">
                     <ul>
-                        <li>Des <strong>campagnes de désinformation massives </strong> visent à déstabiliser notre société</li>
-                        <li>Des <strong>campagnes économiques illégales et des attaques financières</strong> menacent notre prospérité
+                        <li>Des <strong>campagnes de désinformation massives </strong> visent à déstabiliser notre
+                            société</li>
+                        <li>Des <strong>campagnes économiques illégales et des attaques financières</strong> menacent
+                            notre prospérité
                         </li>
-                        <li>Notre souveraineté et <strong>notre capacité à définir notre propre voie</strong> sont mises à l'épreuve par
+                        <li>Notre souveraineté et <strong>notre capacité à définir notre propre voie</strong> sont mises
+                            à l'épreuve par
                             des pressions extérieures</li>
                     </ul>
-                    <p><strong>Imagine un objet du futur</strong> pour renforcer notre résilience face à ces défis, tout en préservant
+                    <p><strong>Imagine un objet du futur</strong> pour renforcer notre résilience face à ces défis, tout
+                        en préservant
                         notre indépendance et l’amélioration des conditions des vies des populations maliennes et
                         sahéliennes.</p>
                     <p>Ta créativité peut contribuer à un avenir plus juste et prospère pour le Mali !</p>
@@ -80,24 +100,40 @@
             <div class="loading" style="text-align: center;">
                 <dotlottie-player src="https://lottie.host/e6af3007-0ce2-4fb3-9207-0636dbf995ef/DCq0Q17ukA.lottie"
                     background="transparent" speed="1" style="height: 120px;" loop autoplay></dotlottie-player>
-                <p style="color: #FFF; text-align: center; font-family: Poppins; font-size: 23px; font-style: normal; font-weight: 300; line-height: normal;">Sublimation de ton objet du futur en cours grâce à l'intelligence artificielle...</p>
+                <p
+                    style="color: #FFF; text-align: center; font-family: Poppins; font-size: 23px; font-style: normal; font-weight: 300; line-height: normal;">
+                    Sublimation de ton objet du futur en cours grâce à l'intelligence artificielle...</p>
             </div>
             <div class="generateImage" style="display: none;">
                 <img src="" class="imageGenerate" height="70%" width="70%" />
             </div>
             <div class="footer">
                 <img src="./assets/Kabakoo.svg" alt="logo" />
-                    <button class="restart" style="display: none;" onclick="restart()"></button>
-                    <img src="./assets/Kabakoo.svg" alt="logo" />
-                </div>
+                <button class="restart" style="display: none;" onclick="restart()"></button>
+                <img src="./assets/Kabakoo.svg" alt="logo" />
             </div>
+        </div>
 
-            <div class="gallery" id="gallery">
-                <!-- Les créations récentes s'afficheront ici -->
+        <div class="gallery" id="gallery">
+            <!-- Les créations récentes s'afficheront ici -->
+        </div>
+    </div>
+    </div>
+
+    <div class="popup" id="popup">
+        <div style="position: relative;">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <div style="display: flex;flex-direction: column; justify-content: center;align-items: center;">
+                <img class="popup-img" id="popupImg" src="" alt="Popup Image">
+                <p class="popup-caption" id="popupCaption"></p>
+            </div>
+            <div>
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="gallery.js"></script>
     <script src="script.js"></script>
 </body>
 
