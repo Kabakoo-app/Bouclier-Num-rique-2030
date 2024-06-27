@@ -374,6 +374,7 @@ button.restart {
 
 .image-container figure {
     margin: 0;
+    width: 400px;
     /* Enlève les marges par défaut de la balise figure */
 }
 
