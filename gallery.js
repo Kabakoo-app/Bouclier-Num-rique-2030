@@ -4,13 +4,13 @@
 
         closeBtn.addEventListener('click', () => {
             popup.style.display = 'none';
-            startScroll()
+            // startScroll()
         });
 
         popup.addEventListener('click', (event) => {
             if (event.target === popup) {
                 popup.style.display = 'none';
-                startScroll()
+                // startScroll()
             }
         });
 
@@ -65,14 +65,14 @@
             });
         }
 
-        function startScroll() {
-            scrollInterval = setInterval(() => {
-                galleryContainer.style.transform = `translateY(${galleryContainer.offsetTop - 1}px)`;
-                if (galleryContainer.offsetTop + galleryContainer.offsetHeight < 0) {
-                    galleryContainer.style.transform = 'translateY(100%)';
-                }
-            }, 50);
-        }
+        // function startScroll() {
+        //     scrollInterval = setInterval(() => {
+        //         galleryContainer.style.transform = `translateY(${galleryContainer.offsetTop - 1}px)`;
+        //         if (galleryContainer.offsetTop + galleryContainer.offsetHeight < 0) {
+        //             galleryContainer.style.transform = 'translateY(100%)';
+        //         }
+        //     }, 50);
+        // }
 
         // function stopScroll() {
         //     clearInterval(scrollInterval);
