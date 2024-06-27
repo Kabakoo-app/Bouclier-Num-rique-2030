@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             const { ok, message } = await response.json();
             if(ok){
-                alert(`${name} de l'objet validé !`)
+                alert(`Nom de l'objet validé !`)
                 restart()
             }
            
