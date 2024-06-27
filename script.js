@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.uri}`;
                 imgElement.alt = image.title;
                 imgElement.onclick = function () {
-                    console.log(image.uri);
+                    showModal(image.uri, image.title);
                 };
                 const titleElement = document.createElement('p');
                 titleElement.textContent = image.title;
@@ -58,6 +58,16 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         })
         .catch(error => console.error('Error fetching images:', error));
+
+        function showModal(uri, title) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+    
+            modalImage.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${uri}`;
+            modalTitle.textContent = title;
+            modal.style.display = 'flex';
+        }
 
     function startDrawing(event) {
         isDrawing = true;

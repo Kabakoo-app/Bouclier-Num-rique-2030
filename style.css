@@ -71,6 +71,17 @@ body {
     border-radius: 10px;
 }
 
+#modal {
+    position: absolute;
+    display: none;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
 .header {
     font-size: 2em;
     background: #795879;
