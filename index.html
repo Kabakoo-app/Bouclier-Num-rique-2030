@@ -112,9 +112,12 @@
             <!-- Les créations récentes s'afficheront ici -->
         </div>
         <div id="modal">
-            <div style="height: 60%; width: 60%;">
+            <div style="position: relative; height: 60%; width: 60%;">
                 <img id="modal-image" src="" alt="images" height="100%" width="100%" />
                 <p id="modal-title">title</p>
+                <div class="close" onclick="closeModal()">
+                   <img src="./assets/close.svg" height="64" alt="close" />
+                </div>
             </div>
         </div>
         </div>

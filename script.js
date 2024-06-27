@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const nameForObject = document.getElementById('nameForObject');
     const valideBtn = document.querySelector('.valider');
 
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modal-image');
+    const modalTitle = document.getElementById('modal-title');
+
     canvas.width = windowWidth / 1.5;
     canvas.height = windowHeight - 200
 
@@ -60,13 +64,19 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error fetching images:', error));
 
         function showModal(uri, title) {
-            const modal = document.getElementById('modal');
-            const modalImage = document.getElementById('modal-image');
-            const modalTitle = document.getElementById('modal-title');
-    
+        
             modalImage.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${uri}`;
+            modalImage.style.borderRadius = '10px'
             modalTitle.textContent = title;
+
             modal.style.display = 'flex';
+        }
+
+        window.closeModal = function() {
+            modalImage.src = ``;
+            modalImage.style.borderRadius = '10px'
+            modalTitle.textContent = '';
+            modal.style.display = 'none';
         }
 
     function startDrawing(event) {
