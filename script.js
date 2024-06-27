@@ -10,10 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const generateImage = document.querySelector('.generateImage');
     const restartButton = document.querySelector('.restart');
     const imageGenerate = document.querySelector('.imageGenerate');
-
-    const home = document.querySelector(".home");
-    const header = document.querySelector(".header");
-    const button = document.querySelector(".button");
+    const nameForObject = document.getElementById('nameForObject');
+    const valideBtn = document.querySelector('.valider');
 
     canvas.width = windowWidth / 1.5;
     canvas.height = windowHeight - 200
@@ -139,6 +137,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.submitCreation = async function () {
         const  description= document.getElementById('mainFunction').value;
+
+        if (!description.length) {
+            return alert(`Choisis le domaine d'action de ton objet...`)
+        }
+
         loader.style.display = "flex";
         loading.style.display = "block"
         const sketch = canvas.toDataURL('image/png');
@@ -156,11 +159,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const responseJson = await response.json();
 
         const { data : { enhance_sketch_uri }} = responseJson
+        console.log(responseJson)
         loading.style.display = "none"
         generateImage.style.display = 'block';
         imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhance_sketch_uri}`
         footer.style.display = "none"
     };
+
+    nameForObject.addEventListener('input', (event) => {
+        event.preventDefault();
+        const value = event.target.value;
+        if (value.length > 0) {
+            valideBtn.classList.add('activeForValide');
+        } else {
+            valideBtn.classList.remove('activeForValide');
+        }
+    });
 
     function generateQRCode(data) {
         const qrCanvas = document.getElementById('qrCodeCanvas');
