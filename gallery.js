@@ -42,7 +42,7 @@
                 imgElement.classList.add('gallery-item');
 
                 const figcaptionElement = document.createElement('figcaption');
-                figcaptionElement.textContent = image.sketch_name || 'Légende sans image';
+                figcaptionElement.textContent = image.sketch_name || 'Image sans légende';
 
                 figureElement.appendChild(imgElement);
                 figureElement.appendChild(figcaptionElement);
