@@ -30,17 +30,19 @@
         fetchImages()
 
         function populateGallery(images) {
+            console.log(images);
             let galleryContainer = document.getElementById('image-container');
             images.forEach((image, index) => {
+                console.log(image.sketch_name);
                 const figureElement = document.createElement('figure');
 
                 const imgElement = document.createElement('img');
-                imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.uri}`;
-                imgElement.alt = image.caption || 'Image sans légende';
+                imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.enhanced_uri}`;
+                imgElement.alt = image.sketch_name || 'Image sans légende';
                 imgElement.classList.add('gallery-item');
 
                 const figcaptionElement = document.createElement('figcaption');
-                figcaptionElement.textContent = image.caption || 'Légende sans image';
+                figcaptionElement.textContent = image.sketch_name || 'Légende sans image';
 
                 figureElement.appendChild(imgElement);
                 figureElement.appendChild(figcaptionElement);
