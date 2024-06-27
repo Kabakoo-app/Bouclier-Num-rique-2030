@@ -1,16 +1,26 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    let sketch_id = null
+    let isloading = null
     const API_URL = "https://goapi.kabakoo.africa";
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
     const loader = document.querySelector(".loader")
     const loading = document.querySelector(".loading")
+    const footer = document.querySelector('.footer');
     const canvas = document.getElementById('drawingCanvas');
     const generateImage = document.querySelector('.generateImage');
     const restartButton = document.querySelector('.restart');
     const imageGenerate = document.querySelector('.imageGenerate');
+    const nameForObject = document.getElementById('nameForObject');
+    const valideBtn = document.querySelector('.valider');
 
   
+    // const modal = document.getElementById('modal');
+    // const modalImage = document.getElementById('modal-image');
+    // const modalTitle = document.getElementById('modal-title');
+
     canvas.width = windowWidth / 1.5;
     canvas.height = windowHeight - 200
 
@@ -29,6 +39,46 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchmove', handleTouchMove);
     canvas.addEventListener('touchend', stopDrawing);
+
+    // fetch toutes les sketches pour les afficher dans les sidebar sur la page d'accueil
+    fetch(`${API_URL}/media/get_sketches/`)
+        .then(response => response.json())
+        .then(response => {
+            const { data } = response
+            const container = document.querySelector('.side-content');
+            data.forEach(image => {
+                const sketchDiv = document.createElement('div');
+                sketchDiv.className = 'sketch';
+                const imgElement = document.createElement('img');
+                imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.uri}`;
+                imgElement.alt = image.title;
+                imgElement.onclick = function () {
+                    showModal(image.uri, image.title);
+                };
+                const titleElement = document.createElement('p');
+                titleElement.textContent = image.title;
+                sketchDiv.appendChild(imgElement);
+                sketchDiv.appendChild(titleElement);
+                container.appendChild(sketchDiv);
+            });
+        })
+        .catch(error => console.error('Error fetching images:', error));
+
+        function showModal(uri, title) {
+        
+            modalImage.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${uri}`;
+            modalImage.style.borderRadius = '10px'
+            modalTitle.textContent = title;
+
+            modal.style.display = 'flex';
+        }
+
+        window.closeModal = function() {
+            modalImage.src = ``;
+            modalImage.style.borderRadius = '10px'
+            modalTitle.textContent = '';
+            modal.style.display = 'none';
+        }
 
     function startDrawing(event) {
         isDrawing = true;
@@ -113,41 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
 
-    function fetchDataFromBothAPIs(sketch, description) {
-        const fetch1 = fetch(`${API_URL}/media/enhance_sketch/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sketch, description })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for API 1: ' + response.statusText);
-                }
-                return response.json();
-            });
-
-        const fetch2 = fetch(`${API_URL}/media/get_enhanced_sketch?user_uid=60d8e13d-d318-4f9c-b077-5e2e68ecf4aa`, {
-            method: 'GET'
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for API 2: ' + response.statusText);
-                }
-                return response.json();
-            });
-
-        return Promise.all([fetch1, fetch2])
-            .then(results => {
-                const [data1, data2] = results;
-                return { data1, data2 };
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            });
-    }
-
     window.setShape = function (newShape, button) {
         shape = newShape;
         const buttons = document.querySelectorAll('#creationArea button');
@@ -169,28 +184,75 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.submitCreation = async function () {
-        const description = document.getElementById('mainFunction').value;
-        const sketch = canvas.toDataURL('image/png');
-
+        const  description= document.getElementById('mainFunction').value;
 
         if (!description.length) {
-            return alert("Tu dois choisir la fonction principale de ton objet avant de pouvoir continuer.")
+            return alert(`Choisis le domaine d'action de ton objet...`)
         }
+
         loader.style.display = "flex";
         loading.style.display = "block"
-        fetchDataFromBothAPIs(sketch, description)
+        const sketch = canvas.toDataURL('image/png');
 
-            .then(({ data1, data2 }) => {
-                const { data: { enhanced_sketch_uri } } = data2
-                loading.style.display = "none"
-                generateImage.style.display = 'block';
-                imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhanced_sketch_uri}`
-                restartButton.style.display = 'block';
-                // Do something with data1 and data2
-            });
-
-        // generateQRCode(data.qrCodeData);
+        const response = await fetch(`${API_URL}/media/enhance_sketch/`,  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sketch, description })
+        })
+        if (!response.ok) {
+            throw new Error('Network response was not ok for API 1: ' + response.statusText);
+        }
+        const responseJson = await response.json();
+        const { data : { enhance_sketch_uri }} = responseJson
+        sketch_id = responseJson.data.sketch_id
+        loading.style.display = "none"
+        generateImage.style.display = 'block';
+        imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhance_sketch_uri}`
+        footer.style.display = "none"
     };
+
+    nameForObject.addEventListener('input', (event) => {
+        event.preventDefault();
+        const value = event.target.value;
+        if (value.length > 0) {
+            valideBtn.classList.add('activeForValide');
+        } else {
+            valideBtn.classList.remove('activeForValide');
+        }
+    });
+
+    valideBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if(isloading) return
+        isloading = true
+        const name = nameForObject.value;
+        if (name.length > 0) {
+            const response = await fetch(`${API_URL}/media/name_sketch/`,  {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    name,
+                    sketch_id
+                })
+            })
+            if (!response.ok) {
+                isloading = false
+                throw new Error('Network response was not ok for API 1: ' + response.statusText);
+            }
+            const { ok, message } = await response.json();
+            if(ok){
+                alert(message)
+                restart()
+            }
+           
+        } else {
+           alert('Faut donner un nom a ton object!')
+        }
+    });
 
     function generateQRCode(data) {
         const qrCanvas = document.getElementById('qrCodeCanvas');
