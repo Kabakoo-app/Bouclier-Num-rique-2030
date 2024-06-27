@@ -1,5 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    let sketch_id = null
+    let isloading = null
     const API_URL = "https://goapi.kabakoo.africa";
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
@@ -157,9 +160,8 @@ document.addEventListener("DOMContentLoaded", function () {
             throw new Error('Network response was not ok for API 1: ' + response.statusText);
         }
         const responseJson = await response.json();
-
         const { data : { enhance_sketch_uri }} = responseJson
-        console.log(responseJson)
+        sketch_id = responseJson.data.sketch_id
         loading.style.display = "none"
         generateImage.style.display = 'block';
         imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhance_sketch_uri}`
@@ -173,6 +175,37 @@ document.addEventListener("DOMContentLoaded", function () {
             valideBtn.classList.add('activeForValide');
         } else {
             valideBtn.classList.remove('activeForValide');
+        }
+    });
+
+    valideBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if(isloading) return
+        isloading = true
+        const name = nameForObject.value;
+        if (name.length > 0) {
+            const response = await fetch(`${API_URL}/media/name_sketch/`,  {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    name,
+                    sketch_id
+                })
+            })
+            if (!response.ok) {
+                isloading = false
+                throw new Error('Network response was not ok for API 1: ' + response.statusText);
+            }
+            const { ok, message } = await response.json();
+            if(ok){
+                alert(message)
+                restart()
+            }
+           
+        } else {
+           alert('Faut donner un nom a ton object!')
         }
     });
 
