@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const windowHeight = window.innerHeight
     const loader = document.querySelector(".loader")
     const loading = document.querySelector(".loading")
+    const footer = document.querySelector('.footer');
     const canvas = document.getElementById('drawingCanvas');
     const generateImage = document.querySelector('.generateImage');
     const restartButton = document.querySelector('.restart');
@@ -116,41 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
     };
 
-    function fetchDataFromBothAPIs(sketch, description) {
-        const fetch1 = fetch(`${API_URL}/media/enhance_sketch/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sketch, description })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for API 1: ' + response.statusText);
-                }
-                return response.json();
-            });
-
-        const fetch2 = fetch(`${API_URL}/media/get_enhanced_sketch?user_uid=60d8e13d-d318-4f9c-b077-5e2e68ecf4aa`, {
-            method: 'GET'
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for API 2: ' + response.statusText);
-                }
-                return response.json();
-            });
-
-        return Promise.all([fetch1, fetch2])
-            .then(results => {
-                const [data1, data2] = results;
-                return { data1, data2 };
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            });
-    }
-
     window.setShape = function (newShape, button) {
         shape = newShape;
         const buttons = document.querySelectorAll('#creationArea button');
@@ -172,27 +138,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.submitCreation = async function () {
-        const description = document.getElementById('mainFunction').value;
-        const sketch = canvas.toDataURL('image/png');
-
-
-        if (!description.length) {
-            return alert()
-        }
+        const  description= document.getElementById('mainFunction').value;
         loader.style.display = "flex";
         loading.style.display = "block"
-        fetchDataFromBothAPIs(sketch, description)
+        const sketch = canvas.toDataURL('image/png');
 
-            .then(({ data1, data2 }) => {
-                const { data: { enhanced_sketch_uri } } = data2
-                loading.style.display = "none"
-                generateImage.style.display = 'block';
-                imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhanced_sketch_uri}`
-                restartButton.style.display = 'block';
-                // Do something with data1 and data2
-            });
+        const response = await fetch(`${API_URL}/media/enhance_sketch/`,  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sketch, description })
+        })
+        if (!response.ok) {
+            throw new Error('Network response was not ok for API 1: ' + response.statusText);
+        }
+        const responseJson = await response.json();
 
-        // generateQRCode(data.qrCodeData);
+        const { data : { enhance_sketch_uri }} = responseJson
+        loading.style.display = "none"
+        generateImage.style.display = 'block';
+        imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhance_sketch_uri}`
+        footer.style.display = "none"
     };
 
     function generateQRCode(data) {
