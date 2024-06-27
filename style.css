@@ -54,6 +54,7 @@ body {
     gap: 10px;
 }
 .sketch {
+    cursor: pointer;
     width: calc(50% - 10px);
     box-sizing: border-box;
 }

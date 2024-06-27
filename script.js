@@ -35,24 +35,23 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.addEventListener('touchmove', handleTouchMove);
     canvas.addEventListener('touchend', stopDrawing);
 
-
+    // fetch toutes les sketches pour les afficher dans les sidebar sur la page d'accueil
     fetch(`${API_URL}/media/get_sketches/`)
         .then(response => response.json())
         .then(response => {
             const { data } = response
-            console.log(data)
             const container = document.querySelector('.side-content');
             data.forEach(image => {
                 const sketchDiv = document.createElement('div');
                 sketchDiv.className = 'sketch';
-
                 const imgElement = document.createElement('img');
                 imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.uri}`;
                 imgElement.alt = image.title;
-
+                imgElement.onclick = function () {
+                    console.log(image.uri);
+                };
                 const titleElement = document.createElement('p');
                 titleElement.textContent = image.title;
-
                 sketchDiv.appendChild(imgElement);
                 sketchDiv.appendChild(titleElement);
                 container.appendChild(sketchDiv);
