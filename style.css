@@ -405,6 +405,9 @@ button.restart {
     z-index: 0.3;
     width: 100%;
     animation: scroll 60s linear infinite;
+    animation-delay: 5s; /* L'animation commence après 2 secondes */
+    overflow: hidden; /* Cache le débordement */
+
 }
 
 .image-container img {
@@ -419,11 +422,11 @@ button.restart {
 
 @keyframes scroll {
     0% {
-        transform: translateY(100%);
+        transform: translateY(10%);
     }
 
     100% {
-        transform: translateY(-100%);
+        transform: translateY(-50%);
     }
 }
 
