@@ -14,13 +14,19 @@
         <div class="header">
             <img src="./assets/Kabakoo.svg" class="logo" alt="logo" />
         </div>
-        <section class="home">
-            <div class="header-title">
-                <h1 class="title">Bouclier Numérique 2030</h1>
-                <h1 class="description">Imagine un <strong>objet du futur</strong> pour protéger le Mali !</h1>
-            </div>
-            <button class="button" onclick="startCreation()"></button>
-        </section>
+        <div class="home">
+            <section class="main">
+                <div class="header-title">
+                    <h1 class="title">Bouclier Numérique 2030</h1>
+                    <h1 class="description">Imagine un <strong>objet du futur</strong> pour protéger le Mali !</h1>
+                </div>
+                <button class="button" onclick="startCreation()"></button>
+            </section>
+            <section class="side">
+                <div class="side-content">
+                </div>
+            </section>
+        </div>
         <div class="creation-area" id="creationArea" style="display: none;">
             <div class="drawing-area">
                 <div style="margin: 20px;">
@@ -108,9 +114,9 @@
             </div>
         </div>
 
-            <div class="gallery" id="gallery">
-                <!-- Les créations récentes s'afficheront ici -->
-            </div>
+        <div class="gallery" id="gallery">
+            <!-- Les créations récentes s'afficheront ici -->
+        </div>
         </div>
     </div>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
