@@ -1,7 +1,6 @@
 # Bouclier-Numérique-2030
 
-Bouclier-Numérique-2030 est un projet qui a vu le jour pendant La semaine du numérique pour permettre aux différent(e)s participant(e)s à l'événement de créer une œuvre en combinant le design et l'AI pour protéger le Mali en 2030.
-
+Bouclier-Numérique-2030 est un projet qui a vu le jour pendant la Semaine du numérique pour permettre aux différents participants de créer une œuvre en combinant leur imagination (en desinant) et l'IA pour protéger le Mali en 2030.
 ## Table des Matières
 
 - [Installation](#installation)
