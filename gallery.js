@@ -37,7 +37,7 @@
                 const figureElement = document.createElement('figure');
 
                 const imgElement = document.createElement('img');
-                imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.enhanced_uri}`;
+                imgElement.src = `https://storage.kabakoo.africa/${image.enhanced_uri}`;
                 imgElement.alt = image.sketch_name || 'Image sans légende';
                 imgElement.classList.add('gallery-item');
 
