@@ -16,7 +16,7 @@
 
         async function fetchImages() {
             try {
-                const response = await fetch(`https://goapi.kabakoo.africa/media/get_sketches/`);
+                const response = await fetch(`https://boucliernumerique.kabakoo.africa/api/media/get_sketches/`);
                 if (!response.ok) {
                     throw new Error(`Erreur: ${response.status} - ${response.statusText}`);
                 }
