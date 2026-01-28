@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let sketch_id = null
     let isloading = null
-    const API_URL = "https://goapi.kabakoo.africa";
+    const API_URL = "https://boucliernumerique.kabakoo.africa/api";
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
     const loader = document.querySelector(".loader")
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const sketchDiv = document.createElement('div');
                 sketchDiv.className = 'sketch';
                 const imgElement = document.createElement('img');
-                imgElement.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${image.uri}`;
+                imgElement.src = `https://storage.kabakoo.africa/${image.uri}`;
                 imgElement.alt = image.title;
                 imgElement.onclick = function () {
                     showModal(image.uri, image.title);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function showModal(uri, title) {
         
-            modalImage.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${uri}`;
+            modalImage.src = `https://storage.kabakoo.africa/${uri}`;
             modalImage.style.borderRadius = '10px'
             modalTitle.textContent = title;
 
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
         sketch_id = responseJson.data.sketch_id
         loading.style.display = "none"
         generateImage.style.display = 'block';
-        imageGenerate.src = `https://s3.us-east-2.amazonaws.com/files.kabakoo.africa/${enhance_sketch_uri}`
+        imageGenerate.src = `https://storage.kabakoo.africa/${enhance_sketch_uri}`
         footer.style.display = "none"
     };
 
